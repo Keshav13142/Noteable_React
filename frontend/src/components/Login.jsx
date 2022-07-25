@@ -21,6 +21,9 @@ const Login = () => {
   };
 
   const loginUser = async (e) => {
+    if (curr_user) {
+      navigate("/notes");
+    }
     e.preventDefault();
     const data = await fetch("/login", {
       method: "post",

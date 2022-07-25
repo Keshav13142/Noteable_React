@@ -82,7 +82,6 @@ const getNotes = async (req, res) => {
 const saveNote = async (req, res) => {
   const { title, content } = req.body;
   const user = await JSON.parse(req.headers.user);
-  console.log(user);
   if (!user) {
     res.status(401).json({
       error: {

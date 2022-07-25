@@ -31,70 +31,76 @@ const Notes = () => {
   };
 
   const getNotes = async () => {
-    const data = await fetch("/notes", {
-      method: "get",
-      headers: new Headers({
-        user: JSON.stringify(curr_user),
-        "Content-Type": "application/json",
-      }),
-    });
+    if (curr_user) {
+      const data = await fetch("/notes", {
+        method: "get",
+        headers: new Headers({
+          user: JSON.stringify(curr_user),
+          "Content-Type": "application/json",
+        }),
+      });
 
-    if (data.ok) {
-      setAllNotes(await data.json());
-    } else {
-      const { error } = await data.json();
-      console.log(error);
-      setInfo({ open: true, message: error.info, type: "error" });
+      if (data.ok) {
+        setAllNotes(await data.json());
+      } else {
+        const { error } = await data.json();
+        console.log(error);
+        setInfo({ open: true, message: error.info, type: "error" });
+      }
     }
   };
 
   const saveNote = async (e) => {
-    e.preventDefault();
-    const data = await fetch("/notes", {
-      method: "post",
-      headers: new Headers({
-        user: JSON.stringify(curr_user),
-        "Content-Type": "application/json",
-      }),
-      body: JSON.stringify(note),
-    });
-    if (data.ok) {
-      setInfo({
-        open: true,
-        message: "Note saved successfully",
-        type: "success",
+    if (curr_user) {
+      e.preventDefault();
+      const data = await fetch("/notes", {
+        method: "post",
+        headers: new Headers({
+          user: JSON.stringify(curr_user),
+          "Content-Type": "application/json",
+        }),
+        body: JSON.stringify(note),
       });
-      note.title = "";
-      note.content = "";
-      getNotes();
-    } else {
-      const { error } = await data.json();
-      console.log(error);
-      setInfo({ open: true, message: error.info, type: "error" });
+      if (data.ok) {
+        setInfo({
+          open: true,
+          message: "Note saved successfully",
+          type: "success",
+        });
+        note.title = "";
+        note.content = "";
+        getNotes();
+      } else {
+        const { error } = await data.json();
+        console.log(error);
+        setInfo({ open: true, message: error.info, type: "error" });
+      }
     }
   };
 
   const deleteNote = async (e) => {
-    e.preventDefault();
-    const data = await fetch("/delete", {
-      method: "post",
-      body: JSON.stringify({ id: e.target.value, uid: e.target.name }),
-      headers: new Headers({
-        user: JSON.stringify(curr_user),
-        "Content-Type": "application/json",
-      }),
-    });
-    if (data.ok) {
-      setInfo({
-        open: true,
-        message: "Deleted note",
-        type: "info",
+    if (curr_user) {
+      e.preventDefault();
+      const data = await fetch("/delete", {
+        method: "post",
+        body: JSON.stringify({ id: e.target.value, uid: e.target.name }),
+        headers: new Headers({
+          user: JSON.stringify(curr_user),
+          "Content-Type": "application/json",
+        }),
       });
-      getNotes();
-    } else {
-      const { error } = await data.json();
-      console.log(error);
-      setInfo({ open: true, message: error.info, type: "error" });
+      if (data.ok) {
+        setInfo({
+          open: true,
+          message: "Deleted note",
+          type: "info",
+        });
+        getNotes();
+      } else {
+        const { error } = await data.json();
+        console.log(error);
+        setInfo({ open: true, message: error.info, type: "error" });
+      }
     }
   };
 
