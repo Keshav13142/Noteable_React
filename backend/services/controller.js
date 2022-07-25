@@ -1,24 +1,19 @@
 const bcrypt = require("bcrypt");
-const e = require("express");
 const { User, Note } = require("../models/models");
 
 const register = async (req, res) => {
   const { email, password, name } = req.body;
   if (!email || !password || !name) {
-    res.render("register", {
-      title: "Register",
-      loggedIn: false,
+    res.status(401).json({
       error: {
         status: true,
-        message: "Mandatory fields are empty!!",
-        info: "Please enter all the required details",
+        message: "Mandatory fields are missing!",
+        info: "Please enter all the details",
       },
     });
   } else {
     if (await User.findOne({ email })) {
-      res.render("register", {
-        title: "Register",
-        loggedIn: false,
+      res.status(401).json({
         error: {
           status: true,
           message: "Email already exists!!",
@@ -32,8 +27,10 @@ const register = async (req, res) => {
         email: email,
         password: hashPass,
       });
-      req.session.user = user;
-      res.redirect("/notes");
+      res.status(200).json({
+        name: user.name,
+        _id: user._id,
+      });
     }
   }
 };
@@ -41,9 +38,7 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    res.render("login", {
-      title: "Login",
-      loggedIn: false,
+    res.status(401).json({
       error: {
         status: true,
         message: "Invalid credentials!!",
@@ -53,12 +48,12 @@ const login = async (req, res) => {
   } else {
     const user = await User.findOne({ email });
     if (user && (await bcrypt.compare(password, user.password))) {
-      req.session.user = { name: user.name, _id: user._id };
-      res.redirect("notes");
+      res.status(200).json({
+        name: user.name,
+        _id: user._id,
+      });
     } else
-      res.render("login", {
-        title: "Login",
-        loggedIn: false,
+      res.status(401).json({
         error: {
           status: true,
           message: "Invalid credentials!!",
@@ -69,49 +64,70 @@ const login = async (req, res) => {
 };
 
 const getNotes = async (req, res) => {
-  const user = req.session.user;
+  const user = JSON.parse(req.headers.user);
   if (user) {
-    const notes = await Note.find({ user_id: req.session.user._id });
-    res.render("notes", {
-      name: user.name,
-      title: "My notes",
-      loggedIn: true,
-      error: {},
-      notes: notes,
-    });
+    const notes = await Note.find({ user_id: user._id });
+    res.status(200).json(notes);
   } else {
-    res.redirect("login");
+    res.status(401).json({
+      error: {
+        status: true,
+        message: "Access denied",
+        info: "Please login to perform this action!",
+      },
+    });
   }
-};
-
-const logout = (req, res) => {
-  req.session.user = null;
-  res.redirect("login");
 };
 
 const saveNote = async (req, res) => {
   const { title, content } = req.body;
-  if (!req.session.user) {
-    res.redirect("/logout");
+  const user = await JSON.parse(req.headers.user);
+  console.log(user);
+  if (!user) {
+    res.status(401).json({
+      error: {
+        status: true,
+        message: "Access denied",
+        info: "Please login to perform this action!",
+      },
+    });
   } else {
     const note = await Note.create({
-      user_id: req.session.user._id,
+      user_id: user._id,
       title: title.trim(),
       content: content.trim(),
     });
-    res.redirect("/notes");
+    res.status(200).json({
+      note: note,
+    });
   }
 };
 
 const deleteNote = async (req, res) => {
-  if (!req.session.user) {
-    res.redirect("/logout");
+  const user = await JSON.parse(req.headers.user);
+  if (!user) {
+    res.status(401).json({
+      error: {
+        status: true,
+        message: "Access denied",
+        info: "Please login to perform this action!",
+      },
+    });
   } else {
-    if (req.session.user._id != req.body.uid) res.redirect("/logout");
-    else {
+    if (user._id != req.body.uid) {
+      res.status(401).json({
+        error: {
+          status: true,
+          message: "Access denied",
+          info: "Please login to perform this action!",
+        },
+      });
+    } else {
       await Note.deleteOne({ _id: req.body.id });
-      res.redirect("/notes");
+      res.status(200).json({
+        message: "Note deleted successfully",
+      });
     }
   }
 };
-module.exports = { register, login, getNotes, logout, saveNote, deleteNote };
+module.exports = { register, login, getNotes, saveNote, deleteNote };
