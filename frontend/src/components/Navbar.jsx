@@ -16,7 +16,6 @@ const Navbar = () => {
     });
     if (data.ok) {
       const { message } = await data.json();
-      console.log(message);
       setInfo({
         open: true,
         message: message,

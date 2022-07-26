@@ -64,14 +64,15 @@ const Notes = () => {
         body: JSON.stringify(note),
       });
       if (data.ok) {
+        const new_note = await data.json();
         setInfo({
           open: true,
           message: "Note saved successfully",
           type: "success",
         });
-        note.title = "";
+        setAllNotes((prev) => [...prev, new_note.note]);
         note.content = "";
-        getNotes();
+        note.title = "";
       } else {
         const { error } = await data.json();
         setInfo({ open: true, message: error.info, type: "warning" });
@@ -99,7 +100,9 @@ const Notes = () => {
           message: "Deleted note",
           type: "info",
         });
-        getNotes();
+        setAllNotes((prev) =>
+          prev.filter((note) => note._id !== e.target.value)
+        );
       } else {
         const { error } = await data.json();
         setInfo({ open: true, message: error.info, type: "warning" });
