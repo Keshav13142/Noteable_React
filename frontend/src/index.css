@@ -54,3 +54,8 @@ textarea {
   color: black;
   font-weight: 550;
 }
+
+.logout {
+  border: none;
+  background-color: #ffca28;
+}

@@ -9,7 +9,7 @@ import Note from "./Note";
 const Notes = () => {
   const navigate = useNavigate();
 
-  const { curr_user, setInfo } = useContext(UserContext);
+  const { curr_user, setInfo, setCurrUser } = useContext(UserContext);
 
   useEffect(() => {
     if (!curr_user) navigate("/login");
@@ -35,7 +35,7 @@ const Notes = () => {
       const data = await fetch("/notes", {
         method: "get",
         headers: new Headers({
-          user: JSON.stringify(curr_user),
+          Authorization: "Bearer " + curr_user.token,
           "Content-Type": "application/json",
         }),
       });
@@ -44,8 +44,10 @@ const Notes = () => {
         setAllNotes(await data.json());
       } else {
         const { error } = await data.json();
-        console.log(error);
-        setInfo({ open: true, message: error.info, type: "error" });
+        setCurrUser(null);
+        localStorage.clear();
+        navigate("/login");
+        setInfo({ open: true, message: error.info, type: "warning" });
       }
     }
   };
@@ -56,7 +58,7 @@ const Notes = () => {
       const data = await fetch("/notes", {
         method: "post",
         headers: new Headers({
-          user: JSON.stringify(curr_user),
+          Authorization: "Bearer " + curr_user.token,
           "Content-Type": "application/json",
         }),
         body: JSON.stringify(note),
@@ -72,8 +74,10 @@ const Notes = () => {
         getNotes();
       } else {
         const { error } = await data.json();
-        console.log(error);
-        setInfo({ open: true, message: error.info, type: "error" });
+        setInfo({ open: true, message: error.info, type: "warning" });
+        setCurrUser(null);
+        localStorage.clear();
+        navigate("/login");
       }
     }
   };
@@ -85,7 +89,7 @@ const Notes = () => {
         method: "post",
         body: JSON.stringify({ id: e.target.value, uid: e.target.name }),
         headers: new Headers({
-          user: JSON.stringify(curr_user),
+          Authorization: "Bearer " + curr_user.token,
           "Content-Type": "application/json",
         }),
       });
@@ -98,8 +102,10 @@ const Notes = () => {
         getNotes();
       } else {
         const { error } = await data.json();
-        console.log(error);
-        setInfo({ open: true, message: error.info, type: "error" });
+        setInfo({ open: true, message: error.info, type: "warning" });
+        setCurrUser(null);
+        localStorage.clear();
+        navigate("/login");
       }
     }
   };

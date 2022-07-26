@@ -43,4 +43,18 @@ const noteSchema = mongoose.Schema(
 );
 
 const Note = mongoose.model("Note", noteSchema);
-module.exports = { User, Note };
+
+const sessionSchema = mongoose.Schema({
+  user_id: {
+    type: String,
+    required: true,
+  },
+  token: {
+    type: String,
+    required: true,
+  },
+});
+
+const Session = mongoose.model("Session", sessionSchema);
+
+module.exports = { User, Note, Session };

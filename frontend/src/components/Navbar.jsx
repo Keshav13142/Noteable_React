@@ -1,13 +1,35 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { useContext } from "react";
 
 const Navbar = () => {
-  const { curr_user, setCurrUser } = useContext(UserContext);
-  const logout = () => {
-    localStorage.clear();
-    setCurrUser(null);
+  const navigate = useNavigate();
+  const { curr_user, setCurrUser, setInfo } = useContext(UserContext);
+  const logout = async () => {
+    const data = await fetch("/logout", {
+      method: "post",
+      headers: new Headers({
+        Authorization: "Bearer " + curr_user.token,
+        "Content-Type": "application/json",
+      }),
+    });
+    if (data.ok) {
+      const { message } = await data.json();
+      console.log(message);
+      setInfo({
+        open: true,
+        message: message,
+        type: "success",
+      });
+      localStorage.clear();
+      setCurrUser(null);
+      navigate("/login");
+    } else {
+      const { error } = await data.json();
+      console.log(error);
+      setInfo({ open: true, message: error.info, type: "error" });
+    }
   };
   return (
     <>
@@ -45,9 +67,9 @@ const Navbar = () => {
                     </span>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" onClick={logout} to="/login">
+                    <button className="logout nav-link" onClick={logout}>
                       Logout
-                    </Link>
+                    </button>
                   </li>
                 </>
               ) : null}
