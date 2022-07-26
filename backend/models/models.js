@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+//User schema with name,email and password
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -20,8 +21,11 @@ const userSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
+//Create the User model
 const User = mongoose.model("User", userSchema);
 
+//Note schema with user_id(who created the note), title of the note, content of the note
 const noteSchema = mongoose.Schema(
   {
     user_id: {
@@ -42,8 +46,10 @@ const noteSchema = mongoose.Schema(
   }
 );
 
+//Create the Note model
 const Note = mongoose.model("Note", noteSchema);
 
+//Session schema with user_id,JWT token
 const sessionSchema = mongoose.Schema({
   user_id: {
     type: String,
@@ -55,6 +61,7 @@ const sessionSchema = mongoose.Schema({
   },
 });
 
+//Create the Session model
 const Session = mongoose.model("Session", sessionSchema);
 
 module.exports = { User, Note, Session };

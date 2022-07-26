@@ -3,11 +3,13 @@ const app = express();
 const mongoose = require("mongoose");
 require("dotenv").config();
 const port = process.env.PORT;
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 const { errorHandler } = require("./middleware/errorHandler");
 const jwtAuth = require("./middleware/authMiddleware");
 
+//Tell express to use the json() middleware to process requests
+app.use(express.json());
+
+//Import all the necessary functions
 const { login, register, logout } = require("./controller/userController");
 const {
   getNotes,
@@ -15,19 +17,25 @@ const {
   deleteNote,
 } = require("./controller/notesController");
 
+//Connect with the database
 mongoose.connect(process.env.MONGO_URL);
 
+//Define all the routes
 app.route("/login").post(login);
+
 app.route("/register").post(register);
 
+//These routes require JWT tokens to gain access to the notes
 app.route("/notes").get(jwtAuth, getNotes).post(jwtAuth, saveNote);
 
 app.post("/delete", jwtAuth, deleteNote);
 
 app.post("/logout", jwtAuth, logout);
 
+//Tell express to use the custom Error handling middleware => Do this after defining all the routes
 app.use(errorHandler);
 
+//Tell express to listen at specified PORT
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });

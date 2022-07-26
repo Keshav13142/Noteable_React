@@ -8,15 +8,20 @@ import { useState } from "react";
 import { Info } from "./components/Info";
 
 function App() {
+  //Create a state for maintaing the details of the logged in user (name,id and JWT token)
   const [curr_user, setCurrUser] = useState(
     JSON.parse(localStorage.getItem("user"))
   );
+
+  //Create a state for the alert Info componenet(Alerts)
   const [info, setInfo] = useState({ open: false, message: "", type: "info" });
   return (
     <>
       <BrowserRouter>
+        {/* Wrap all the components/routes with the Context provider , set the value of the global state*/}
         <UserContext.Provider value={{ curr_user, setCurrUser, info, setInfo }}>
           <Routes>
+            {/*Declare all the routes and their corresponding  Components*/}
             <Route path="/" element={<Login />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />

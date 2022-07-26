@@ -7,44 +7,69 @@ import { UserContext } from "../contexts/UserContext";
 import Navbar from "./Navbar";
 
 const Login = () => {
+  //Get hold of the global state
   const { curr_user, setCurrUser, setInfo } = useContext(UserContext);
+
+  //Create instance of useNavigate()
   const navigate = useNavigate();
+
+  //Create a state for maintaining user info
   const [user, setUser] = useState({ email: "", password: "" });
 
+  //Runs on mount to check if a session is already active
   useEffect(() => {
     if (curr_user) navigate("/notes");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //Update the user's info on input change
   const updateUser = (e) => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  //Executes when the login button is clicked
   const loginUser = async (e) => {
+    //Check if a session is active
     if (curr_user) {
       navigate("/notes");
-    }
-    e.preventDefault();
-    const data = await fetch("/login", {
-      method: "post",
-      body: JSON.stringify(user),
-      headers: new Headers({
-        "Content-Type": "application/json",
-      }),
-    });
-    if (data.ok) {
-      setInfo({
-        open: true,
-        message: "Logged in successfully",
-        type: "success",
-      });
-      const user_data = await data.json();
-      localStorage.setItem("user", JSON.stringify(user_data));
-      setCurrUser(user_data);
-      navigate("/notes");
     } else {
-      const { error } = await data.json();
-      setInfo({ open: true, message: error.info, type: "error" });
+      //Prevent the default action
+      e.preventDefault();
+
+      //Make a POST request to /login (backend API) with user's info in the requst body
+      const data = await fetch("/login", {
+        method: "post",
+        body: JSON.stringify(user),
+        headers: new Headers({
+          "Content-Type": "application/json",
+        }),
+      });
+
+      //Check if status is success
+      if (data.ok) {
+        //Setting global state for Alert
+        setInfo({
+          open: true,
+          message: "Logged in successfully",
+          type: "success",
+        });
+
+        //Get the user's data and JWT token and store it in the localstorage
+        const user_data = await data.json();
+        localStorage.setItem("user", JSON.stringify(user_data));
+
+        //Set the Global user state
+        setCurrUser(user_data);
+
+        //Navigate to the notes page
+        navigate("/notes");
+      } else {
+        //Get the error message
+        const { error } = await data.json();
+
+        //Setting global state for Alert
+        setInfo({ open: true, message: error.info, type: "error" });
+      }
     }
   };
 

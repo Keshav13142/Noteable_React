@@ -4,21 +4,30 @@ import Navbar from "./Navbar";
 import { UserContext } from "../contexts/UserContext";
 
 const Register = () => {
+  //Create instance of useNavigate()
   const navigate = useNavigate();
+
+  //Get hold of the global state
   const { setCurrUser, setInfo } = useContext(UserContext);
 
+  //Create a state for maintaining user info
   const [user, setUser] = useState({
     name: "",
     email: "",
     password: "",
   });
 
+  //Update the user's info on input change
   const updateUser = (e) => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  //Executes when the Register button is clicked
   const registerUser = async (e) => {
+    //Prevent the default action
     e.preventDefault();
+
+    //Make a POST request to /register (backend API) with user's info in the requst body
     const data = await fetch("/register", {
       method: "post",
       body: JSON.stringify(user),
@@ -26,14 +35,27 @@ const Register = () => {
         "Content-Type": "application/json",
       }),
     });
+
+    //Check if status is success
     if (data.ok) {
+      //Setting global state for Alert
+      setInfo({
+        open: true,
+        message: "Registered successfully",
+        type: "success",
+      });
+      //Get the user's data and JWT token and store it in the localstorage
       const user_data = await data.json();
       localStorage.setItem("user", JSON.stringify(user_data));
       setCurrUser(user_data);
+
+      //Navigate to the notes page
       navigate("/notes");
     } else {
+      //Get the error message
       const { error } = await data.json();
-      console.log(error);
+
+      //Setting global state for Alert
       setInfo({ open: true, message: error.info, type: "error" });
     }
   };

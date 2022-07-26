@@ -4,9 +4,15 @@ import { UserContext } from "../contexts/UserContext";
 import { useContext } from "react";
 
 const Navbar = () => {
+  //Create instance of useNavigate()
   const navigate = useNavigate();
+
+  //Get hold of the global state
   const { curr_user, setCurrUser, setInfo } = useContext(UserContext);
+
+  //Executes when the Logout button is clicked
   const logout = async () => {
+    //Make a post request to /logout (backend API) with JWT token in header
     const data = await fetch("/logout", {
       method: "post",
       headers: new Headers({
@@ -14,19 +20,32 @@ const Navbar = () => {
         "Content-Type": "application/json",
       }),
     });
+
+    //Check if status is success
     if (data.ok) {
+      //Get the message from the response
       const { message } = await data.json();
+
+      //Setting global state for Alert
       setInfo({
         open: true,
         message: message,
         type: "success",
       });
+
+      //Clear the localstorage
       localStorage.clear();
+
+      //Empty the global state for user
       setCurrUser(null);
+
+      //Navigate to the Login page
       navigate("/login");
     } else {
+      //Get the error message
       const { error } = await data.json();
-      console.log(error);
+
+      //Setting global state for Alert
       setInfo({ open: true, message: error.info, type: "error" });
     }
   };
