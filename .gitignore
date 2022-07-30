@@ -1,7 +1,7 @@
 node_modules
-.env
 # dependencies
 /node_modules
+/frontend/build
 /.pnp
 .pnp.js
 

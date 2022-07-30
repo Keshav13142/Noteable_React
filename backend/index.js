@@ -5,6 +5,7 @@ require("dotenv").config();
 const port = process.env.PORT;
 const { errorHandler } = require("./middleware/errorHandler");
 const jwtAuth = require("./middleware/authMiddleware");
+const path = require("path");
 
 //Tell express to use the json() middleware to process requests
 app.use(express.json());
@@ -37,6 +38,22 @@ app.post("/logout", jwtAuth, logout);
 
 //Tell express to use the custom Error handling middleware => Do this after defining all the routes
 app.use(errorHandler);
+
+// -------------------------------Deployment---------------------------------------
+
+const __dirname1 = path.resolve();
+if (process.env.NODE_ENV === "prod") {
+  app.use(express.static(path.join(__dirname1, "/frontend/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"));
+  });
+} else {
+  app.get("/", (_, res) => {
+    res.send("API is runnning successfully!!");
+  });
+}
+
+// -------------------------------Deployment---------------------------------------
 
 //Tell express to listen at specified PORT
 app.listen(port, () => {
