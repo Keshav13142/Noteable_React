@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -5,7 +6,6 @@ require("dotenv").config();
 const port = process.env.PORT;
 const { errorHandler } = require("./middleware/errorHandler");
 const jwtAuth = require("./middleware/authMiddleware");
-const path = require("path");
 
 //Tell express to use the json() middleware to process requests
 app.use(express.json());
@@ -21,6 +21,18 @@ const {
 
 //Connect with the database
 mongoose.connect(process.env.MONGO_URL);
+
+const __dirname1 = path.resolve();
+if (process.env.NODE_ENV === "prod") {
+  app.use(express.static(path.join(__dirname1, "/frontend/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"));
+  });
+} else {
+  app.get("/", (_, res) => {
+    res.send("API is runnning successfully!!");
+  });
+}
 
 //Define all the routes
 app.route("/login").post(login);
@@ -40,18 +52,6 @@ app.post("/logout", jwtAuth, logout);
 app.use(errorHandler);
 
 // -------------------------------Deployment---------------------------------------
-
-const __dirname1 = path.resolve();
-if (process.env.NODE_ENV === "prod") {
-  app.use(express.static(path.join(__dirname1, "/frontend/build")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"));
-  });
-} else {
-  app.get("/", (_, res) => {
-    res.send("API is runnning successfully!!");
-  });
-}
 
 // -------------------------------Deployment---------------------------------------
 
