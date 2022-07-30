@@ -20,11 +20,14 @@ const getNotes = asyncHandler(async (req, res) => {
 // Requires JWT auth
 const saveNote = asyncHandler(async (req, res) => {
   //Get the title and content of the note from the request body
-  const { title, content } = req.body;
+  var { title, content } = req.body;
 
   //get the user info from the request (set by the auth middleware)
   const user = req.user;
 
+  if (title.length == 0) {
+    title = "Untitled";
+  }
   //Create the note
   const note = await Note.create({
     user_id: user._id,

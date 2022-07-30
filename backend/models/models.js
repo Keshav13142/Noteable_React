@@ -34,7 +34,7 @@ const noteSchema = mongoose.Schema(
     },
     title: {
       type: String,
-      required: [true, "please add a text value"],
+      default: "Untitled",
     },
     content: {
       type: String,
