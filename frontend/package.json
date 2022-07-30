@@ -40,5 +40,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://noteable-app.herokuapp.com"
+  "proxy": "https://noteable-app.herokuapp.com/api"
 }
