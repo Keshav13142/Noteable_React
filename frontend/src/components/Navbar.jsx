@@ -65,6 +65,11 @@ const Navbar = () => {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <img
+              src={require("../assets/post-it.png")}
+              alt="logo"
+              className="logo-icon"
+            />
             <Link className="nav-text" to="/notes">
               Noteable
             </Link>
@@ -81,7 +86,7 @@ const Navbar = () => {
                   <li className="nav-item">
                     <span className="nav-link text-black">
                       Hello 👋
-                      <span className="text-primary">{curr_user.name}</span>
+                      <span className="nav-name">{curr_user.name}</span>
                     </span>
                   </li>
                   <li className="nav-item">

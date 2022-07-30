@@ -170,8 +170,8 @@ const Notes = () => {
   return (
     <>
       <Navbar />
-      <div className="d-flex flex-column align-items-center gap-3 mt-2">
-        <div className="card p-3 w-75">
+      <div className="d-flex flex-column align-items-center gap-3 mt-4">
+        <div className="card p-3 w-75 test">
           <form onSubmit={saveNote} method="post">
             <div className="mb-3">
               <input
@@ -206,7 +206,12 @@ const Notes = () => {
         <div className="container w-100 p-2 d-flex flex-row flex-wrap gap-5 justify-content-evenly">
           {/* Map through all the notes and render the Notes component by passing props */}
           {allNotes.map((note) => (
-            <Note key={note._id} note={note} deleteNote={deleteNote} />
+            <Note
+              key={note._id}
+              note={note}
+              deleteNote={deleteNote}
+              refresh={getNotes}
+            />
           ))}
         </div>
       </div>

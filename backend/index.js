@@ -15,6 +15,7 @@ const {
   getNotes,
   saveNote,
   deleteNote,
+  updateNote,
 } = require("./controller/notesController");
 
 //Connect with the database
@@ -27,6 +28,8 @@ app.route("/register").post(register);
 
 //These routes require JWT tokens to gain access to the notes
 app.route("/notes").get(jwtAuth, getNotes).post(jwtAuth, saveNote);
+
+app.post("/update", jwtAuth, updateNote);
 
 app.post("/delete", jwtAuth, deleteNote);
 

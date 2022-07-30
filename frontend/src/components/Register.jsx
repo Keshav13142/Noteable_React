@@ -63,7 +63,7 @@ const Register = () => {
   return (
     <>
       <Navbar />
-      <div className="container d-flex align-items-center flex-column gap-5 justify-content-center mt-2 ">
+      <div className="container d-flex align-items-center flex-column gap-3 mt-5 justify-content-center mt-2 ">
         <h2>Create your account</h2>
         <div className="card  text-bg-dark p-4 w-auto">
           <form onSubmit={registerUser} method="post">

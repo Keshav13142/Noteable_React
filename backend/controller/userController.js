@@ -80,7 +80,7 @@ const logout = asyncHandler(async (req, res) => {
   const user = req.user;
 
   //Delete the note from the database and send response
-  await Session.deleteOne({ user_id: user._id });
+  await Session.deleteMany({ user_id: user._id });
   res.status(200).json({
     message: "Successfully logged out",
   });

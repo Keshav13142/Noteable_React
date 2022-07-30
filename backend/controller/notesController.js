@@ -39,6 +39,26 @@ const saveNote = asyncHandler(async (req, res) => {
 });
 
 //@method => POST
+//@route => '/update'
+// Requires JWT auth
+const updateNote = asyncHandler(async (req, res) => {
+  //Get the title and content of the note from the request body
+  const { title, content, _id } = req.body;
+
+  //Create the note
+  const note = await Note.findByIdAndUpdate(
+    _id,
+    { title: title, content: content },
+    { new: true }
+  );
+
+  //Send the note back as response
+  res.status(200).json({
+    note: note,
+  });
+});
+
+//@method => POST
 //@route => '/delete'
 // Requires JWT auth
 const deleteNote = asyncHandler(async (req, res) => {
@@ -61,4 +81,4 @@ const deleteNote = asyncHandler(async (req, res) => {
 });
 
 //Export all the functions
-module.exports = { getNotes, saveNote, deleteNote };
+module.exports = { getNotes, saveNote, updateNote, deleteNote };

@@ -22,14 +22,14 @@ body {
 }
 
 nav {
-  background-color: #ffca28;
+  background-color: #2c77d366;
 }
 
 .note {
   width: fit-content;
   max-width: 300px;
   border: 1px solid rgb(150, 146, 146);
-  background-color: rgb(246, 244, 194);
+  background-color: #cedef3;
   border-radius: 20px;
   height: fit-content;
   padding: 15px;
@@ -57,5 +57,39 @@ textarea {
 
 .logout {
   border: none;
-  background-color: #ffca28;
+  background-color: #99b8db;
+}
+
+.editInput {
+  border: 2px solid #e1e2e1;
+}
+
+.logo-icon {
+  width: 20px;
+  margin-right: 10px;
+}
+
+.nav-name {
+  color: black;
+  margin-left: 2px;
+  font-weight: 500;
+}
+
+@media (max-width: 991px) {
+  .test {
+    height: 320px;
+  }
+  .test input {
+    height: 50px;
+  }
+  .test textarea {
+    height: 150px;
+  }
+  .note {
+    font-size: 23px;
+  }
+
+  .note h5 {
+    font-size: 25px;
+  }
 }
