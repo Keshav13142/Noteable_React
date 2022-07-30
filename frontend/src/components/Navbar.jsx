@@ -13,7 +13,7 @@ const Navbar = () => {
   //Executes when the Logout button is clicked
   const logout = async () => {
     //Make a post request to /logout (backend API) with JWT token in header
-    const data = await fetch("/logout", {
+    const data = await fetch("/api/logout", {
       method: "post",
       headers: new Headers({
         Authorization: "Bearer " + curr_user.token,

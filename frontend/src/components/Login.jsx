@@ -37,7 +37,7 @@ const Login = () => {
       e.preventDefault();
 
       //Make a POST request to /login (backend API) with user's info in the requst body
-      const data = await fetch("/login", {
+      const data = await fetch("/api/login", {
         method: "post",
         body: JSON.stringify(user),
         headers: new Headers({
