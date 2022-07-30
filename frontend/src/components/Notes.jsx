@@ -41,7 +41,7 @@ const Notes = () => {
   const getNotes = async () => {
     if (curr_user) {
       //Make a GET request to /login (backend API) with JWT token in the header
-      const data = await fetch("/notes", {
+      const data = await fetch("/api/notes", {
         method: "get",
         headers: new Headers({
           Authorization: "Bearer " + curr_user.token,
@@ -77,7 +77,7 @@ const Notes = () => {
       e.preventDefault();
 
       //Make a POST request to /notes (backend API) note info in request body and JWT token in header
-      const data = await fetch("/notes", {
+      const data = await fetch("/api/notes", {
         method: "post",
         headers: new Headers({
           Authorization: "Bearer " + curr_user.token,
@@ -128,7 +128,7 @@ const Notes = () => {
       e.preventDefault();
 
       //Make a post request to /delete (backend API) with note's info in the requst body and JWT token in the headers
-      const data = await fetch("/delete", {
+      const data = await fetch("/api/delete", {
         method: "post",
         body: JSON.stringify({ id: e.target.value, uid: e.target.name }),
         headers: new Headers({
