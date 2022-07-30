@@ -12,7 +12,7 @@ const authentication = asyncHandler(async (req, res, next) => {
     const token = authHeader.split(" ")[1];
 
     //Compare with session entry in the database for the current  user
-    if ((await Session.find({ token: token })) !== []) {
+    if (await Session.findOne({ token: token })) {
       try {
         //Verify the token using jwt.verify() => returns the decoded value
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
