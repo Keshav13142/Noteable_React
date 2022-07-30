@@ -22,18 +22,6 @@ const {
 //Connect with the database
 mongoose.connect(process.env.MONGO_URL);
 
-const __dirname1 = path.resolve();
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname1, "/frontend/build")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"));
-  });
-} else {
-  app.get("/", (_, res) => {
-    res.send("API is runnning successfully!!");
-  });
-}
-
 //Define all the routes
 app.route("/api/login").post(login);
 
@@ -47,6 +35,18 @@ app.post("/api/update", jwtAuth, updateNote);
 app.post("/api/delete", jwtAuth, deleteNote);
 
 app.post("/api/logout", jwtAuth, logout);
+
+const __dirname1 = path.resolve();
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname1, "/frontend/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"));
+  });
+} else {
+  app.get("/", (_, res) => {
+    res.send("API is runnning successfully!!");
+  });
+}
 
 //Tell express to use the custom Error handling middleware => Do this after defining all the routes
 app.use(errorHandler);
