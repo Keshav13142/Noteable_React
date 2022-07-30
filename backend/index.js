@@ -36,6 +36,10 @@ app.post("/api/delete", jwtAuth, deleteNote);
 
 app.post("/api/logout", jwtAuth, logout);
 
+//Tell express to use the custom Error handling middleware => Do this after defining all the routes
+app.use(errorHandler);
+
+// -------------------------------Deployment---------------------------------------
 const __dirname1 = path.resolve();
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname1, "/frontend/build")));
@@ -47,12 +51,6 @@ if (process.env.NODE_ENV === "production") {
     res.send("API is runnning successfully!!");
   });
 }
-
-//Tell express to use the custom Error handling middleware => Do this after defining all the routes
-app.use(errorHandler);
-
-// -------------------------------Deployment---------------------------------------
-
 // -------------------------------Deployment---------------------------------------
 
 //Tell express to listen at specified PORT
