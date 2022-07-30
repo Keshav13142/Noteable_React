@@ -35,18 +35,18 @@ if (process.env.NODE_ENV === "prod") {
 }
 
 //Define all the routes
-app.route("/login").post(login);
+app.route("/api/login").post(login);
 
-app.route("/register").post(register);
+app.route("/api/register").post(register);
 
 //These routes require JWT tokens to gain access to the notes
-app.route("/notes").get(jwtAuth, getNotes).post(jwtAuth, saveNote);
+app.route("/api/notes").get(jwtAuth, getNotes).post(jwtAuth, saveNote);
 
-app.post("/update", jwtAuth, updateNote);
+app.post("/api/update", jwtAuth, updateNote);
 
-app.post("/delete", jwtAuth, deleteNote);
+app.post("/api/delete", jwtAuth, deleteNote);
 
-app.post("/logout", jwtAuth, logout);
+app.post("/api/logout", jwtAuth, logout);
 
 //Tell express to use the custom Error handling middleware => Do this after defining all the routes
 app.use(errorHandler);
