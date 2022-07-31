@@ -49,16 +49,19 @@ export default function RecipeReviewCard() {
         </CardContent>
         <div className="d-flex justify-content-center w-100 mt-0">
           <CardActions disableSpacing>
+            {/* eslint-disable-next-line */}
             <a href="https://github.com/keshav13142" target="_blank">
               <IconButton>
                 <GitHubIcon />
               </IconButton>
             </a>
+            {/* eslint-disable-next-line */}
             <a href="https://twitter.com/keshav13142" target="_blank">
               <IconButton>
                 <TwitterIcon />
               </IconButton>
             </a>
+            {/* eslint-disable-next-line */}
             <a href="https://www.linkedin.com/in/keshav13142" target="_blank">
               <IconButton>
                 <LinkedInIcon />

@@ -8,6 +8,8 @@ import { useState } from "react";
 import { Info } from "./components/Info";
 import About from "./components/About";
 import Navbar from "./components/Navbar";
+import Backdrop from "@mui/material/Backdrop";
+import LinearProgress from "@mui/material/LinearProgress";
 
 function App() {
   //Create a state for maintaing the details of the logged in user (name,id and JWT token)
@@ -33,7 +35,12 @@ function App() {
             setLoading,
           }}
         >
+          {loading && <LinearProgress color="primary" />}
           <Navbar />
+          <Backdrop
+            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={loading}
+          />
           <Routes>
             {/*Declare all the routes and their corresponding  Components*/}
             <Route path="/" element={<Login />} />

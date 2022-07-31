@@ -134,7 +134,9 @@ const Note = (props) => {
       </Modal>
       <form className="note d-flex flex-column g-5" method="post">
         <div className="d-flex justify-content-around align-items-center gap-3">
-          <h5 style={{ wordBreak: "break-word" }}>{props.note.title}</h5>
+          <h5 style={{ wordBreak: "break-word", fontSize: "22px" }}>
+            {props.note.title}
+          </h5>
           <div className="d-flex justify-content-around align-items-center">
             <IconButton onClick={handleOpen}>
               <EditIcon fontSize="small" />

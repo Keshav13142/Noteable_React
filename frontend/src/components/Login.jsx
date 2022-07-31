@@ -9,15 +9,14 @@ import LoginIcon from "@mui/icons-material/Login";
 
 const Login = () => {
   //Get hold of the global state
-  const { curr_user, setCurrUser, setInfo } = useContext(UserContext);
+  const { curr_user, setCurrUser, setInfo, loading, setLoading } =
+    useContext(UserContext);
 
   //Create instance of useNavigate()
   const navigate = useNavigate();
 
   //Create a state for maintaining user info
   const [user, setUser] = useState({ email: "", password: "" });
-
-  const [loading, setLoading] = useState(false);
 
   //Runs on mount to check if a session is already active
   useEffect(() => {
@@ -114,9 +113,6 @@ const Login = () => {
               />
             </div>
             <div className="text-center">
-              {/* <button type="submit" className="btn btn-primary">
-                Login
-              </button> */}
               <LoadingButton
                 size="small"
                 loading={loading}

@@ -6,6 +6,8 @@ import { UserContext } from "../contexts/UserContext";
 import { useEffect } from "react";
 import Note from "./Note";
 import SaveIcon from "@mui/icons-material/Save";
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
 
 const Notes = () => {
   //Create instance of useNavigate()
@@ -220,15 +222,24 @@ const Notes = () => {
           </form>
         </div>
         <div className="container w-100 p-2 d-flex flex-row flex-wrap gap-5 justify-content-evenly">
-          {/* Map through all the notes and render the Notes component by passing props */}
-          {allNotes.map((note) => (
-            <Note
-              key={note._id}
-              note={note}
-              deleteNote={deleteNote}
-              refresh={getNotes}
-            />
-          ))}
+          {loading
+            ? [...new Array(3)].map((_, ind) => {
+                return (
+                  <Stack spacing={1} key={ind}>
+                    <Skeleton variant="text" />
+                    <Skeleton variant="rectangular" width={210} height={118} />
+                  </Stack>
+                );
+              })
+            : /* Map through all the notes and render the Notes component by passing props */
+              allNotes.map((note) => (
+                <Note
+                  key={note._id}
+                  note={note}
+                  deleteNote={deleteNote}
+                  refresh={getNotes}
+                />
+              ))}
         </div>
       </div>
     </>
