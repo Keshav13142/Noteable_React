@@ -40,8 +40,8 @@ export default function RecipeReviewCard() {
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;➡ Mongo Db (Database)
             <br />
             <br />
-            Hope you like it and want to know more about this App (or ME😶) ,my
-            GitHub profile and other socials are linked down below.
+            Hope you like it and if want to know more about this App (or ME😶)
+            ,my GitHub profile and other socials are linked down below.
             <br />
             <br />
             Hope you have a great day..
