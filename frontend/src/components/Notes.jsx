@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { UserContext } from "../contexts/UserContext";
 import { useEffect } from "react";
 import Note from "./Note";
+import SaveIcon from "@mui/icons-material/Save";
 
 const Notes = () => {
   //Create instance of useNavigate()
   const navigate = useNavigate();
 
   //Get hold of the global state
-  const { curr_user, setInfo, setCurrUser } = useContext(UserContext);
+  const { curr_user, setInfo, setCurrUser, loading, setLoading } =
+    useContext(UserContext);
 
   //Runs on mount to check if a session is already active
   useEffect(() => {
@@ -39,6 +41,7 @@ const Notes = () => {
   };
 
   const getNotes = async () => {
+    setLoading(true);
     if (curr_user) {
       //Make a GET request to /login (backend API) with JWT token in the header
       const data = await fetch("/api/notes", {
@@ -48,6 +51,8 @@ const Notes = () => {
           "Content-Type": "application/json",
         }),
       });
+
+      setLoading(false);
 
       //Check if status is success
       if (data.ok) {
@@ -72,6 +77,7 @@ const Notes = () => {
 
   //Executes when the Save button is clicked
   const saveNote = async (e) => {
+    setLoading(true);
     if (curr_user) {
       //Prevent the default action
       e.preventDefault();
@@ -104,6 +110,7 @@ const Notes = () => {
         //Reset note detials
         note.content = "";
         note.title = "";
+        setLoading(false);
       } else {
         //Get the error message
         const { error } = await data.json();
@@ -123,19 +130,22 @@ const Notes = () => {
 
   //Executes when the delete button is clicked
   const deleteNote = async (e) => {
+    setLoading(true);
     if (curr_user) {
       //Prevent the default action
       e.preventDefault();
 
-      //Make a post request to /delete (backend API) with note's info in the requst body and JWT token in the headers
+      // Make a post request to /delete (backend API) with note's info in the requst body and JWT token in the headers
       const data = await fetch("/api/delete", {
         method: "post",
-        body: JSON.stringify({ id: e.target.value, uid: e.target.name }),
+        body: e.target.name,
         headers: new Headers({
           Authorization: "Bearer " + curr_user.token,
           "Content-Type": "application/json",
         }),
       });
+
+      setLoading(false);
 
       //Check if status is success
       if (data.ok) {
@@ -148,7 +158,7 @@ const Notes = () => {
 
         //Update the state of allNotes
         setAllNotes((prev) =>
-          prev.filter((note) => note._id !== e.target.value)
+          prev.filter((note) => note._id !== JSON.parse(e.target.name).id)
         );
       } else {
         //Get the error message
@@ -169,7 +179,6 @@ const Notes = () => {
 
   return (
     <>
-      <Navbar />
       <div className="d-flex flex-column align-items-center gap-3 mt-4">
         <div className="card p-3 w-75 test">
           <form onSubmit={saveNote} method="post">
@@ -197,9 +206,16 @@ const Notes = () => {
               ></textarea>
             </div>
             <div className="text-center">
-              <button type="submit" className="btn btn-primary">
+              <LoadingButton
+                size="small"
+                loading={loading}
+                loadingPosition="start"
+                startIcon={<SaveIcon />}
+                variant="contained"
+                type="submit"
+              >
                 Save
-              </button>
+              </LoadingButton>
             </div>
           </form>
         </div>

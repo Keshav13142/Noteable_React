@@ -6,6 +6,8 @@ import Register from "./components/Register";
 import { UserContext } from "./contexts/UserContext";
 import { useState } from "react";
 import { Info } from "./components/Info";
+import About from "./components/About";
+import Navbar from "./components/Navbar";
 
 function App() {
   //Create a state for maintaing the details of the logged in user (name,id and JWT token)
@@ -13,19 +15,25 @@ function App() {
     JSON.parse(localStorage.getItem("user"))
   );
 
+  const [loading, setLoading] = useState(false);
+
   //Create a state for the alert Info componenet(Alerts)
   const [info, setInfo] = useState({ open: false, message: "", type: "info" });
   return (
     <>
       <BrowserRouter>
         {/* Wrap all the components/routes with the Context provider , set the value of the global state*/}
-        <UserContext.Provider value={{ curr_user, setCurrUser, info, setInfo }}>
+        <UserContext.Provider
+          value={{ curr_user, setCurrUser, info, setInfo, loading, setLoading }}
+        >
+          <Navbar />
           <Routes>
             {/*Declare all the routes and their corresponding  Components*/}
             <Route path="/" element={<Login />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="notes" element={<Notes />} />
+            <Route path="about" element={<About />} />
           </Routes>
           <Info />
         </UserContext.Provider>

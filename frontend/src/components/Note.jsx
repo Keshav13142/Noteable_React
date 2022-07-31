@@ -5,6 +5,8 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
+import LoadingButton from "@mui/lab/LoadingButton";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 const style = {
   position: "absolute",
@@ -22,7 +24,8 @@ const Note = (props) => {
   const navigate = useNavigate();
 
   //Get hold of the global state
-  const { curr_user, setInfo, setCurrUser } = useContext(UserContext);
+  const { curr_user, setInfo, setCurrUser, loading, setLoading } =
+    useContext(UserContext);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const [note, setNote] = React.useState(props.note);
@@ -32,6 +35,7 @@ const Note = (props) => {
   };
 
   const updateNote = async (e) => {
+    setLoading(true);
     if (curr_user) {
       //Prevent the default action
       e.preventDefault();
@@ -45,6 +49,8 @@ const Note = (props) => {
         }),
         body: JSON.stringify({ ...note, _id: props.note._id }),
       });
+
+      setLoading(false);
 
       //Check if status is success
       if (data.ok) {
@@ -112,9 +118,16 @@ const Note = (props) => {
               ></textarea>
             </div>
             <div className="text-center">
-              <button type="submit" className="btn btn-primary">
+              <LoadingButton
+                size="small"
+                loading={loading}
+                loadingPosition="end"
+                endIcon={<CloudUploadIcon />}
+                variant="contained"
+                type="submit"
+              >
                 Update
-              </button>
+              </LoadingButton>
             </div>
           </form>
         </Box>
@@ -127,15 +140,16 @@ const Note = (props) => {
               <EditIcon fontSize="small" />
             </IconButton>
             <button
-              value={props.note._id}
               className="btn btn-sm btn-close"
-              name={props.note.user_id}
+              name={JSON.stringify({
+                uid: props.note.user_id,
+                id: props.note._id,
+              })}
               onClick={props.deleteNote}
             ></button>
           </div>
         </div>
         <hr className="m-0 p-0" />
-        <input type="hidden" name="uid" value="<%= note.user_id %>" />
         <p style={{ wordBreak: "break-word" }}>{props.note.content}</p>
       </form>
     </>

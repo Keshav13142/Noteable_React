@@ -65,6 +65,7 @@ textarea {
 }
 
 .logo-icon {
+  margin-bottom: 5px;
   width: 20px;
   margin-right: 10px;
 }
@@ -73,6 +74,12 @@ textarea {
   color: black;
   margin-left: 2px;
   font-weight: 500;
+}
+
+.about {
+  font-size: 18px;
+  color: black;
+  margin-left: 2px;
 }
 
 @media (max-width: 991px) {

@@ -4,7 +4,8 @@ import { useContext } from "react";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
-import Navbar from "./Navbar";
+import LoadingButton from "@mui/lab/LoadingButton";
+import LoginIcon from "@mui/icons-material/Login";
 
 const Login = () => {
   //Get hold of the global state
@@ -15,6 +16,8 @@ const Login = () => {
 
   //Create a state for maintaining user info
   const [user, setUser] = useState({ email: "", password: "" });
+
+  const [loading, setLoading] = useState(false);
 
   //Runs on mount to check if a session is already active
   useEffect(() => {
@@ -29,6 +32,7 @@ const Login = () => {
 
   //Executes when the login button is clicked
   const loginUser = async (e) => {
+    setLoading(true);
     //Check if a session is active
     if (curr_user) {
       navigate("/notes");
@@ -44,6 +48,8 @@ const Login = () => {
           "Content-Type": "application/json",
         }),
       });
+
+      setLoading(false);
 
       //Check if status is success
       if (data.ok) {
@@ -75,7 +81,6 @@ const Login = () => {
 
   return (
     <>
-      <Navbar />
       <div className="container d-flex align-items-center flex-column gap-3 mt-5 justify-content-center mt-2">
         <h2>Sign in to view your notes 📒</h2>
         <div className="card  text-bg-dark p-4 w-auto">
@@ -109,9 +114,19 @@ const Login = () => {
               />
             </div>
             <div className="text-center">
-              <button type="submit" className="btn btn-primary">
+              {/* <button type="submit" className="btn btn-primary">
                 Login
-              </button>
+              </button> */}
+              <LoadingButton
+                size="small"
+                loading={loading}
+                loadingPosition="end"
+                endIcon={<LoginIcon />}
+                variant="contained"
+                type="submit"
+              >
+                Login
+              </LoadingButton>
             </div>
             <p className="mt-3">
               Don't have an account? Create one <Link to="/register">here</Link>

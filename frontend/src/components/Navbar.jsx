@@ -2,16 +2,22 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { useContext } from "react";
+import { IconButton } from "@mui/material";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const Navbar = () => {
   //Create instance of useNavigate()
   const navigate = useNavigate();
 
   //Get hold of the global state
-  const { curr_user, setCurrUser, setInfo } = useContext(UserContext);
+  const { curr_user, setCurrUser, setInfo, loading, setLoading } =
+    useContext(UserContext);
 
   //Executes when the Logout button is clicked
   const logout = async () => {
+    setLoading(true);
     //Make a post request to /logout (backend API) with JWT token in header
     const data = await fetch("/api/logout", {
       method: "post",
@@ -20,6 +26,8 @@ const Navbar = () => {
         "Content-Type": "application/json",
       }),
     });
+
+    setLoading(false);
 
     //Check if status is success
     if (data.ok) {
@@ -54,7 +62,7 @@ const Navbar = () => {
       <nav className="navbar navbar-expand-lg">
         <div className="container-fluid">
           <button
-            className="navbar-toggler"
+            className="navbar-toggler btn-sm"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarTogglerDemo01"
@@ -64,24 +72,28 @@ const Navbar = () => {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
+          <div className="navbar-brand">
             <img
               src={require("../assets/post-it.png")}
               alt="logo"
               className="logo-icon"
             />
             <Link className="nav-text" to="/notes">
-              Noteable
+              Noteables <span style={{ fontWeight: "400" }}></span>
             </Link>
+            <Link className="nav-text" to="/about">
+              <IconButton>
+                <InfoOutlinedIcon fontSize="small" />
+              </IconButton>
+            </Link>
+          </div>
+
+          <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
             <ul className="navbar-nav me-auto">
-              <li className="nav-item">
-                <a className="nav-link" aria-current="page" href="/notes">
-                  (A simple note taking app)
-                </a>
-              </li>
+              <li className="nav-item"></li>
             </ul>
             <ul className="d-flex navbar-nav mb-2 mb-lg-0">
-              {curr_user ? (
+              {curr_user && (
                 <>
                   <li className="nav-item">
                     <span className="nav-link text-black">
@@ -90,12 +102,27 @@ const Navbar = () => {
                     </span>
                   </li>
                   <li className="nav-item">
-                    <button className="logout nav-link" onClick={logout}>
-                      Logout
-                    </button>
+                    <span className="nav-link">
+                      <LoadingButton
+                        size="small"
+                        loading={loading}
+                        loadingPosition="end"
+                        endIcon={<LogoutRoundedIcon />}
+                        variant="text"
+                        type="submit"
+                        onClick={logout}
+                        style={{
+                          color: "black",
+                          fontSize: "12x",
+                          padding: "0",
+                        }}
+                      >
+                        Logout
+                      </LoadingButton>
+                    </span>
                   </li>
                 </>
-              ) : null}
+              )}
             </ul>
           </div>
         </div>

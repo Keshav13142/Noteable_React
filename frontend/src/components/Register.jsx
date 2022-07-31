@@ -1,14 +1,15 @@
 import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
 import { UserContext } from "../contexts/UserContext";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const Register = () => {
   //Create instance of useNavigate()
   const navigate = useNavigate();
 
   //Get hold of the global state
-  const { setCurrUser, setInfo } = useContext(UserContext);
+  const { setCurrUser, setInfo, loading, setLoading } = useContext(UserContext);
 
   //Create a state for maintaining user info
   const [user, setUser] = useState({
@@ -27,6 +28,8 @@ const Register = () => {
     //Prevent the default action
     e.preventDefault();
 
+    setLoading(true);
+
     //Make a POST request to /register (backend API) with user's info in the requst body
     const data = await fetch("/api/register", {
       method: "post",
@@ -35,6 +38,8 @@ const Register = () => {
         "Content-Type": "application/json",
       }),
     });
+
+    setLoading(false);
 
     //Check if status is success
     if (data.ok) {
@@ -54,6 +59,7 @@ const Register = () => {
     } else {
       //Get the error message
       const { error } = await data.json();
+      console.log(error);
 
       //Setting global state for Alert
       setInfo({ open: true, message: error.info, type: "error" });
@@ -62,7 +68,6 @@ const Register = () => {
 
   return (
     <>
-      <Navbar />
       <div className="container d-flex align-items-center flex-column gap-3 mt-5 justify-content-center mt-2 ">
         <h2>Create your account</h2>
         <div className="card  text-bg-dark p-4 w-auto">
@@ -110,9 +115,16 @@ const Register = () => {
               />
             </div>
             <div className="text-center">
-              <button type="submit" className="btn btn-primary">
+              <LoadingButton
+                size="small"
+                loading={loading}
+                loadingPosition="end"
+                endIcon={<HowToRegIcon />}
+                variant="contained"
+                type="submit"
+              >
                 Register
-              </button>
+              </LoadingButton>
             </div>
             <p className="mt-3">
               Already have an account? Login <Link to="/login">here</Link>
