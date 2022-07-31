@@ -79,7 +79,7 @@ const Navbar = () => {
               className="logo-icon"
             />
             <Link className="nav-text" to="/notes">
-              Noteables <span style={{ fontWeight: "400" }}></span>
+              Noteable <span style={{ fontWeight: "400" }}></span>
             </Link>
             <Link className="nav-text" to="/about">
               <IconButton>

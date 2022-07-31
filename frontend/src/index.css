@@ -37,7 +37,7 @@ nav {
 
 .card {
   background-color: #fff;
-  box-shadow: 0 1px 5px rgb(138, 137, 137);
+  /* box-shadow: 0 1px 5px rgb(138, 137, 137); */
 }
 
 textarea {
@@ -80,6 +80,10 @@ textarea {
   font-size: 18px;
   color: black;
   margin-left: 2px;
+}
+
+.MuiCard-root {
+  background-color: #212529;
 }
 
 @media (max-width: 991px) {

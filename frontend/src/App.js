@@ -24,7 +24,14 @@ function App() {
       <BrowserRouter>
         {/* Wrap all the components/routes with the Context provider , set the value of the global state*/}
         <UserContext.Provider
-          value={{ curr_user, setCurrUser, info, setInfo, loading, setLoading }}
+          value={{
+            curr_user,
+            setCurrUser,
+            info,
+            setInfo,
+            loading,
+            setLoading,
+          }}
         >
           <Navbar />
           <Routes>
