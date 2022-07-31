@@ -61,17 +61,19 @@ const Navbar = () => {
     <>
       <nav className="navbar navbar-expand-lg">
         <div className="container-fluid">
-          <button
-            className="navbar-toggler btn-sm"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarTogglerDemo01"
-            aria-controls="navbarTogglerDemo01"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
+          {curr_user && (
+            <button
+              className="navbar-toggler btn-sm"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarTogglerDemo01"
+              aria-controls="navbarTogglerDemo01"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon"></span>
+            </button>
+          )}
           <div className="navbar-brand">
             <img
               src={require("../assets/post-it.png")}
@@ -88,13 +90,16 @@ const Navbar = () => {
             </Link>
           </div>
 
-          <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <ul className="navbar-nav me-auto">
-              <li className="nav-item"></li>
-            </ul>
-            <ul className="d-flex navbar-nav mb-2 mb-lg-0">
-              {curr_user && (
-                <>
+          {curr_user && (
+            <>
+              <div
+                className="collapse navbar-collapse"
+                id="navbarTogglerDemo01"
+              >
+                <ul className="navbar-nav me-auto">
+                  <li className="nav-item"></li>
+                </ul>
+                <ul className="d-flex navbar-nav mb-2 mb-lg-0">
                   <li className="nav-item">
                     <span className="nav-link text-black">
                       Hello 👋
@@ -121,10 +126,10 @@ const Navbar = () => {
                       </LoadingButton>
                     </span>
                   </li>
-                </>
-              )}
-            </ul>
-          </div>
+                </ul>
+              </div>
+            </>
+          )}
         </div>
       </nav>
     </>
