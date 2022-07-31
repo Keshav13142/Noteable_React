@@ -45,7 +45,7 @@ const saveNote = asyncHandler(async (req, res) => {
 //@route => '/update'
 // Requires JWT auth
 const updateNote = asyncHandler(async (req, res) => {
-  var { title, content } = req.body;
+  var { title, content, _id } = req.body;
 
   if (title.length == 0) {
     title = "Untitled";
