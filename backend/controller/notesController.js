@@ -45,9 +45,11 @@ const saveNote = asyncHandler(async (req, res) => {
 //@route => '/update'
 // Requires JWT auth
 const updateNote = asyncHandler(async (req, res) => {
-  //Get the title and content of the note from the request body
-  const { title, content, _id } = req.body;
+  var { title, content } = req.body;
 
+  if (title.length == 0) {
+    title = "Untitled";
+  }
   //Create the note
   const note = await Note.findByIdAndUpdate(
     _id,

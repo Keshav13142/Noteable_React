@@ -19,7 +19,7 @@ const register = asyncHandler(async (req, res) => {
   else {
     if (await User.findOne({ email })) {
       res.status(401);
-      throw new Error("Try logging in if you already have an account");
+      throw new Error("You already have an account!");
     } else {
       //If everthing is fine then salt and hash the password
       const hashPass = await bcrypt.hash(password, 10);
