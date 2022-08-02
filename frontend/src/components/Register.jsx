@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Button from "@mui/material/Button";
+import GitHubIcon from "@mui/icons-material/GitHub";
 
 const Register = () => {
   //Create instance of useNavigate()
@@ -66,11 +68,31 @@ const Register = () => {
     }
   };
 
+  const gitHubAuthRedirect = () => {
+    window.open(
+      `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}`,
+      "_self"
+    );
+  };
+
   return (
     <>
       <div className="container d-flex align-items-center flex-column gap-3 mt-5 justify-content-center mt-2 ">
-        <h2>Create your account</h2>
-        <div className="card  text-bg-dark p-4 w-auto">
+        <h2>Create your account 👇</h2>
+        <div className="card  text-bg-dark home-card">
+          <div className="d-flex gap-3 justify-content-center align-items-center">
+            Register with GitHub
+            <Button
+              color="success"
+              onClick={gitHubAuthRedirect}
+              variant="contained"
+              endIcon={<GitHubIcon />}
+              className="text-white"
+            >
+              GitHub
+            </Button>
+          </div>
+          <hr />
           <form onSubmit={registerUser} method="post">
             <div className="mb-3">
               <label htmlFor="name" className="form-label">

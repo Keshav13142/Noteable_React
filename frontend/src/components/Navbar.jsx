@@ -6,6 +6,8 @@ import { IconButton } from "@mui/material";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Avatar from "@mui/material/Avatar";
+import { googleLogout } from "@react-oauth/google";
 
 const Navbar = () => {
   //Create instance of useNavigate()
@@ -17,6 +19,7 @@ const Navbar = () => {
 
   //Executes when the Logout button is clicked
   const logout = async () => {
+    googleLogout();
     setLoading(true);
     //Make a post request to /logout (backend API) with JWT token in header
     const data = await fetch("/api/logout", {
@@ -99,14 +102,23 @@ const Navbar = () => {
                 <ul className="navbar-nav me-auto">
                   <li className="nav-item"></li>
                 </ul>
-                <ul className="d-flex navbar-nav mb-2 mb-lg-0">
-                  <li className="nav-item">
-                    <span className="nav-link text-black">
-                      Hello 👋
-                      <span className="nav-name">{curr_user.name}</span>
-                    </span>
+                <ul className="d-flex navbar-nav mb-2 mb-lg-0 gap-2 text-black">
+                  <li className="nav-item d-flex justify-content-center align-items-center gap-2 mx-2">
+                    {curr_user.avatar_url ? (
+                      <Avatar
+                        sx={{ width: 35, height: 35 }}
+                        alt="Remy Sharp"
+                        src={curr_user.avatar_url}
+                      />
+                    ) : (
+                      <Avatar sx={{ width: 35, height: 35 }}>
+                        {curr_user.name[0]}
+                      </Avatar>
+                    )}
+
+                    <span className="nav-name">{curr_user.name}</span>
                   </li>
-                  <li className="nav-item">
+                  <li className="nav-item d-flex justify-content-center align-items-center">
                     <span className="nav-link">
                       <LoadingButton
                         size="small"
