@@ -11,8 +11,10 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import { Link } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-
+import { UserContext } from "../contexts/UserContext";
 export default function RecipeReviewCard() {
+  const { curr_user } = React.useContext(UserContext);
+
   return (
     <div className="d-flex justify-content-center align-items-center mt-5">
       <Card sx={{ maxWidth: 345 }}>
@@ -70,7 +72,10 @@ export default function RecipeReviewCard() {
           </CardActions>
         </div>
         <div className="d-block m-auto mb-2" style={{ width: "fit-content" }}>
-          <Link style={{ textDecoration: "none" }} to="/notes">
+          <Link
+            style={{ textDecoration: "none" }}
+            to={curr_user ? "/notes" : "/"}
+          >
             Back to home
             <ArrowBackIcon
               style={{ margin: "0px 0px 2px 2px" }}
