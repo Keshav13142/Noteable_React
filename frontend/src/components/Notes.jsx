@@ -184,7 +184,7 @@ const Notes = () => {
       <div className="d-flex flex-column align-items-center gap-3 mt-4">
         <div className="card p-3 w-75 test note-inp">
           <form onSubmit={saveNote} method="post">
-            <div className="mb-3">
+            <div className="mb-3 inp-border">
               <input
                 onChange={updateNote}
                 value={note.title}
