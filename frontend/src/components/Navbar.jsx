@@ -103,7 +103,7 @@ const Navbar = () => {
                   <li className="nav-item"></li>
                 </ul>
                 <ul className="d-flex navbar-nav mb-2 mb-lg-0 gap-2 text-black">
-                  <li className="nav-item d-flex justify-content-center align-items-center gap-2 mx-4">
+                  <li className="nav-item d-flex justify-content-center align-items-center gap-2 mx-2">
                     {curr_user.avatar_url ? (
                       <Avatar
                         sx={{ width: 35, height: 35 }}

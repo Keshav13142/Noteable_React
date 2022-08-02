@@ -40,7 +40,7 @@ app.post("/api/delete", jwtAuth, deleteNote);
 
 app.post("/api/logout", jwtAuth, logout);
 
-app.get("/auth-google", googleAuthRedirect);
+app.post("/auth-google", googleAuthRedirect);
 
 app.post("/auth-git", gitHubAuthRedirect);
 
