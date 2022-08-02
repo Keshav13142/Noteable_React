@@ -82,8 +82,10 @@ textarea {
   margin-left: 2px;
 }
 
-.MuiCard-root {
-  background-color: #212529;
+.home-card {
+  min-width: 350px;
+  min-height: 400px;
+  padding: 35px;
 }
 
 @media (max-width: 991px) {

@@ -70,7 +70,7 @@ export default function RecipeReviewCard() {
           </CardActions>
         </div>
         <div className="d-block m-auto mb-2" style={{ width: "fit-content" }}>
-          <Link style={{ textDecoration: "none" }} to="/">
+          <Link style={{ textDecoration: "none" }} to="/notes">
             Back to home
             <ArrowBackIcon
               style={{ margin: "0px 0px 2px 2px" }}

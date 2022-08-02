@@ -3,6 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import LoadingButton from "@mui/lab/LoadingButton";
+import GoogleIcon from "@mui/icons-material/Google";
+import Button from "@mui/material/Button";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const Register = () => {
   //Create instance of useNavigate()
@@ -66,11 +70,81 @@ const Register = () => {
     }
   };
 
+  const handleLogin = async ({ access_token }) => {
+    setLoading(true);
+    const data = await fetch("/auth-google", {
+      method: "POST",
+      body: JSON.stringify({
+        token: access_token,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    setLoading(false);
+
+    // Check if status is success
+    if (data.ok) {
+      //Setting global state for Alert
+      setInfo({
+        open: true,
+        message: "Logged in successfully",
+        type: "success",
+      });
+
+      //Get the user's data and JWT token and store it in the localstorage
+      const user_data = await data.json();
+      localStorage.setItem("user", JSON.stringify(user_data));
+
+      //Set the Global user state
+      setCurrUser(user_data);
+
+      //Navigate to the notes page
+      navigate("/notes");
+    } else {
+      //Get the error message
+      const { error } = await data.json();
+
+      //Setting global state for Alert
+      setInfo({ open: true, message: error.info, type: "error" });
+    }
+  };
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: handleLogin,
+    onError: () => {
+      setInfo({
+        open: true,
+        message: "Google Authentication failes",
+        type: "error",
+      });
+    },
+  });
+
   return (
     <>
       <div className="container d-flex align-items-center flex-column gap-3 mt-5 justify-content-center mt-2 ">
-        <h2>Create your account</h2>
-        <div className="card  text-bg-dark p-4 w-auto">
+        <h2>Create your account 👇</h2>
+        <div className="card  text-bg-dark home-card">
+          <div className="d-flex  gap-2 justify-content-center align-items-center">
+            <Button
+              onClick={() => googleLogin()}
+              variant="contained"
+              endIcon={<GoogleIcon />}
+              className="text-white"
+            >
+              Google
+            </Button>
+            <Button
+              variant="contained"
+              endIcon={<GitHubIcon />}
+              className="text-white"
+            >
+              GitHub
+            </Button>
+          </div>
+          <hr />
           <form onSubmit={registerUser} method="post">
             <div className="mb-3">
               <label htmlFor="name" className="form-label">

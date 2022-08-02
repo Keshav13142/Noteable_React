@@ -9,7 +9,6 @@ import LoginIcon from "@mui/icons-material/Login";
 import GoogleIcon from "@mui/icons-material/Google";
 import Button from "@mui/material/Button";
 import GitHubIcon from "@mui/icons-material/GitHub";
-// import { GoogleLogin } from "@react-oauth/google";
 import { useGoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
@@ -83,35 +82,68 @@ const Login = () => {
     }
   };
 
-  const handleLogin = async (googleData) => {
-    console.log(googleData);
-    const res = await fetch("/auth-google", {
+  const handleLogin = async ({ access_token }) => {
+    setLoading(true);
+    const data = await fetch("/auth-google", {
       method: "POST",
       body: JSON.stringify({
-        token: googleData,
+        token: access_token,
       }),
       headers: {
         "Content-Type": "application/json",
       },
     });
-    const data = await res.json();
-    console.log(data);
+
+    setLoading(false);
+
+    // Check if status is success
+    if (data.ok) {
+      //Setting global state for Alert
+      setInfo({
+        open: true,
+        message: "Logged in successfully",
+        type: "success",
+      });
+
+      //Get the user's data and JWT token and store it in the localstorage
+      const user_data = await data.json();
+      localStorage.setItem("user", JSON.stringify(user_data));
+
+      //Set the Global user state
+      setCurrUser(user_data);
+
+      //Navigate to the notes page
+      navigate("/notes");
+    } else {
+      //Get the error message
+      const { error } = await data.json();
+
+      //Setting global state for Alert
+      setInfo({ open: true, message: error.info, type: "error" });
+    }
   };
 
-  const initLogin = useGoogleLogin({
+  const googleLogin = useGoogleLogin({
     onSuccess: handleLogin,
+    onError: () => {
+      setInfo({
+        open: true,
+        message: "Google Authentication failes",
+        type: "error",
+      });
+    },
   });
 
   return (
     <>
       <div className="container d-flex align-items-center flex-column gap-3 mt-5 justify-content-center mt-2">
         <h2>Sign in to view your notes 📒</h2>
-        <div className="card  text-bg-dark p-4 w-auto">
-          <div className="d-flex  gap-2 justify-content-center align-items-center">
+        <div className="card text-bg-dark home-card">
+          <div className="d-flex gap-3 justify-content-center align-items-center">
             <Button
-              onClick={() => initLogin()}
-              endIcon={<GoogleIcon />}
+              onClick={() => googleLogin()}
               variant="contained"
+              endIcon={<GoogleIcon />}
               className="text-white"
             >
               Google
