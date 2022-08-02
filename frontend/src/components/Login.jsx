@@ -6,6 +6,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import LoadingButton from "@mui/lab/LoadingButton";
 import LoginIcon from "@mui/icons-material/Login";
+import GoogleIcon from "@mui/icons-material/Google";
+import Button from "@mui/material/Button";
+import GitHubIcon from "@mui/icons-material/GitHub";
+// import { GoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   //Get hold of the global state
@@ -78,11 +83,48 @@ const Login = () => {
     }
   };
 
+  const handleLogin = async (googleData) => {
+    console.log(googleData);
+    const res = await fetch("/auth-google", {
+      method: "POST",
+      body: JSON.stringify({
+        token: googleData,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+    console.log(data);
+  };
+
+  const initLogin = useGoogleLogin({
+    onSuccess: handleLogin,
+  });
+
   return (
     <>
       <div className="container d-flex align-items-center flex-column gap-3 mt-5 justify-content-center mt-2">
         <h2>Sign in to view your notes 📒</h2>
         <div className="card  text-bg-dark p-4 w-auto">
+          <div className="d-flex  gap-2 justify-content-center align-items-center">
+            <Button
+              onClick={() => initLogin()}
+              endIcon={<GoogleIcon />}
+              variant="contained"
+              className="text-white"
+            >
+              Google
+            </Button>
+            <Button
+              variant="contained"
+              endIcon={<GitHubIcon />}
+              className="text-white"
+            >
+              GitHub
+            </Button>
+          </div>
+          <hr />
           <form onSubmit={loginUser}>
             <div className="mb-3">
               <label htmlFor="email" className="form-label">

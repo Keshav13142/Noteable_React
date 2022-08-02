@@ -18,6 +18,7 @@ const {
   deleteNote,
   updateNote,
 } = require("./controller/notesController");
+const { googleAuthRedirect } = require("./controller/oAuthController");
 
 //Connect with the database
 mongoose.connect(process.env.MONGO_URL);
@@ -35,6 +36,8 @@ app.post("/api/update", jwtAuth, updateNote);
 app.post("/api/delete", jwtAuth, deleteNote);
 
 app.post("/api/logout", jwtAuth, logout);
+
+app.route("/auth-google").get(googleAuthRedirect).post(googleAuthRedirect);
 
 //Tell express to use the custom Error handling middleware => Do this after defining all the routes
 app.use(errorHandler);
