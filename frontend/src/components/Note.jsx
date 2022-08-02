@@ -14,8 +14,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #fff",
+  bgcolor: "#fff",
   borderRadius: "10px",
   p: 4,
 };
@@ -133,7 +132,7 @@ const Note = (props) => {
         </Box>
       </Modal>
       <form className="note d-flex flex-column g-5" method="post">
-        <div className="d-flex justify-content-around align-items-center gap-3">
+        <div className="d-flex justify-content-around align-items-center gap-2">
           <h5 style={{ wordBreak: "break-word", fontSize: "22px" }}>
             {props.note.title}
           </h5>
@@ -152,7 +151,9 @@ const Note = (props) => {
           </div>
         </div>
         <hr className="m-0 p-0" />
-        <p style={{ wordBreak: "break-word" }}>{props.note.content}</p>
+        <p style={{ wordBreak: "break-word", fontSize: "20px" }}>
+          {props.note.content}
+        </p>
       </form>
     </>
   );

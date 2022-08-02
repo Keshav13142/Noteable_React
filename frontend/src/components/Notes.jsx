@@ -182,14 +182,14 @@ const Notes = () => {
   return (
     <>
       <div className="d-flex flex-column align-items-center gap-3 mt-4">
-        <div className="card p-3 w-75 test">
+        <div className="card p-3 w-75 test note-inp">
           <form onSubmit={saveNote} method="post">
             <div className="mb-3">
               <input
                 onChange={updateNote}
                 value={note.title}
                 type="text"
-                className="form-control"
+                className="form-control transparent-input"
                 id="title"
                 name="title"
                 placeholder="Title"
@@ -200,7 +200,7 @@ const Notes = () => {
                 onChange={updateNote}
                 value={note.content}
                 required
-                className="form-control"
+                className="form-control transparent-input"
                 id="content"
                 name="content"
                 rows="3"

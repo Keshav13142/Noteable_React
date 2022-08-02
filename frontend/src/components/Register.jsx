@@ -77,7 +77,7 @@ const Register = () => {
 
   return (
     <>
-      <div className="container d-flex align-items-center flex-column gap-3 mt-5 justify-content-center mt-2 ">
+      <div className="container d-flex align-items-center flex-column gap-3 mt-3 justify-content-center mt-2 ">
         <h2>Create your account 👇</h2>
         <div className="card  text-bg-dark home-card">
           <div className="d-flex gap-3 justify-content-center align-items-center">
