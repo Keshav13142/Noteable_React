@@ -3,10 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import LoadingButton from "@mui/lab/LoadingButton";
-import GoogleIcon from "@mui/icons-material/Google";
 import Button from "@mui/material/Button";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import { useGoogleLogin } from "@react-oauth/google";
 
 const Register = () => {
   //Create instance of useNavigate()
@@ -70,62 +68,9 @@ const Register = () => {
     }
   };
 
-  const handleLogin = async ({ access_token }) => {
-    setLoading(true);
-    const data = await fetch("/auth-google", {
-      method: "POST",
-      body: JSON.stringify({
-        token: access_token,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    setLoading(false);
-
-    // Check if status is success
-    if (data.ok) {
-      //Setting global state for Alert
-      setInfo({
-        open: true,
-        message: "Logged in successfully",
-        type: "success",
-      });
-
-      //Get the user's data and JWT token and store it in the localstorage
-      const user_data = await data.json();
-      localStorage.setItem("user", JSON.stringify(user_data));
-
-      //Set the Global user state
-      setCurrUser(user_data);
-
-      //Navigate to the notes page
-      navigate("/notes");
-    } else {
-      //Get the error message
-      const { error } = await data.json();
-
-      //Setting global state for Alert
-      setInfo({ open: true, message: error.info, type: "error" });
-    }
-  };
-
-  const googleLogin = useGoogleLogin({
-    onSuccess: handleLogin,
-    onError: () => {
-      setInfo({
-        open: true,
-        message: "Google Authentication failes",
-        type: "error",
-      });
-    },
-  });
-
   const gitHubAuthRedirect = () => {
     window.open(
       `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}`,
-      // "https://google.com",
       "_self"
     );
   };
@@ -136,15 +81,7 @@ const Register = () => {
         <h2>Create your account 👇</h2>
         <div className="card  text-bg-dark home-card">
           <div className="d-flex gap-3 justify-content-center align-items-center">
-            <Button
-              color="error"
-              onClick={() => googleLogin()}
-              variant="contained"
-              endIcon={<GoogleIcon />}
-              className="text-white"
-            >
-              Google
-            </Button>
+            Register with GitHub
             <Button
               color="success"
               onClick={gitHubAuthRedirect}

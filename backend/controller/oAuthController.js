@@ -4,35 +4,6 @@ const { User, Session } = require("../models/models");
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
 
-const googleAuthRedirect = asyncHandler(async (req, res) => {
-  const { token } = req.body;
-
-  const data = await axios.get(
-    `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`
-  );
-
-  const { name, email, picture } = data.data;
-
-  var user = await User.findOne({ email });
-
-  //Compare with the hashed password using bcrypt.compare
-  if (!(await User.findOne({ email }))) {
-    const hashPass = await bcrypt.hash(ticket.getUserId(), 10);
-
-    //Save the user in the database
-    user = await User.create({
-      name: name,
-      email: email,
-      password: hashPass,
-    });
-  }
-  res.status(200).json({
-    name: name,
-    avatar_url: picture,
-    token: genereateToken(user._id),
-  });
-});
-
 const gitHubAuthRedirect = asyncHandler(async (req, res) => {
   const { code } = req.body;
   const response = await axios.post(
@@ -81,4 +52,4 @@ const genereateToken = (id) => {
   return token;
 };
 
-module.exports = { googleAuthRedirect, gitHubAuthRedirect };
+module.exports = { gitHubAuthRedirect };

@@ -18,10 +18,7 @@ const {
   deleteNote,
   updateNote,
 } = require("./controller/notesController");
-const {
-  googleAuthRedirect,
-  gitHubAuthRedirect,
-} = require("./controller/oAuthController");
+const { gitHubAuthRedirect } = require("./controller/oAuthController");
 
 //Connect with the database
 mongoose.connect(process.env.MONGO_URL);
@@ -39,8 +36,6 @@ app.post("/api/update", jwtAuth, updateNote);
 app.post("/api/delete", jwtAuth, deleteNote);
 
 app.post("/api/logout", jwtAuth, logout);
-
-app.post("/auth-google", googleAuthRedirect);
 
 app.post("/auth-git", gitHubAuthRedirect);
 
