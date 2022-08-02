@@ -1,6 +1,6 @@
-<h1 style="font-size:40px">[Noteable](https://noteable-app.herokuapp.com) <img src='./frontend/public/post-it.png' width=32></h1>
+<h1 style="font-size:40px">Noteable <img src='https://cdn-icons-png.flaticon.com/512/889/889648.png' width=32></h1>
 
-<h1> - Available [here](https://noteable-app.herokuapp.com)</h1>
+<h1>App is hosted using heroku, available <a href='https://noteable-app.herokuapp.com' target='_blank'>here</a></h1>
 
 This is a Note Taking app built using <br>
 
@@ -13,7 +13,7 @@ This is a Note Taking app built using <br>
 <h2>Features</h2>
 
 - Added GitHub and Google OAuth (Google only for test Users)<br>
-- Session handling and authentication is done using JWT and the passwords are sated and hashed before they are saved in the DB..<br>
+- Session handling and authentication is done using JWT and the passwords are sated and hashed before they are saved in the DB<br>
 
 ---
 
