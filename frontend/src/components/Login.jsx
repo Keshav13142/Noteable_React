@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useContext } from "react";
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import LoadingButton from "@mui/lab/LoadingButton";
 import LoginIcon from "@mui/icons-material/Login";
@@ -25,8 +25,16 @@ const Login = () => {
   //Runs on mount to check if a session is already active
   useEffect(() => {
     if (curr_user) navigate("/notes");
+    else if (code) {
+      gitHubAuth();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // eslint-disable-next-line
+  const [params, _] = useSearchParams();
+
+  const code = params.get("code");
 
   //Update the user's info on input change
   const updateUser = (e) => {
@@ -134,6 +142,55 @@ const Login = () => {
     },
   });
 
+  const gitHubAuthRedirect = () => {
+    window.open(
+      `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}`,
+      // "https://google.com",
+      "_self"
+    );
+  };
+
+  const gitHubAuth = async () => {
+    setLoading(true);
+    const data = await fetch("/auth-git", {
+      method: "POST",
+      body: JSON.stringify({
+        code: code,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    setLoading(false);
+
+    // Check if status is success
+    if (data.ok) {
+      //Setting global state for Alert
+      setInfo({
+        open: true,
+        message: "Logged in successfully",
+        type: "success",
+      });
+
+      //Get the user's data and JWT token and store it in the localstorage
+      const user_data = await data.json();
+      localStorage.setItem("user", JSON.stringify(user_data));
+
+      //Set the Global user state
+      setCurrUser(user_data);
+
+      //Navigate to the notes page
+      navigate("/notes");
+    } else {
+      //Get the error message
+      const { error } = await data.json();
+
+      //Setting global state for Alert
+      setInfo({ open: true, message: error.info, type: "error" });
+    }
+  };
+
   return (
     <>
       <div className="container d-flex align-items-center flex-column gap-3 mt-5 justify-content-center mt-2">
@@ -141,6 +198,7 @@ const Login = () => {
         <div className="card text-bg-dark home-card">
           <div className="d-flex gap-3 justify-content-center align-items-center">
             <Button
+              color="error"
               onClick={() => googleLogin()}
               variant="contained"
               endIcon={<GoogleIcon />}
@@ -149,6 +207,8 @@ const Login = () => {
               Google
             </Button>
             <Button
+              color="success"
+              onClick={gitHubAuthRedirect}
               variant="contained"
               endIcon={<GitHubIcon />}
               className="text-white"
