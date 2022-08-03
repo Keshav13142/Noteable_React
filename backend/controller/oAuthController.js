@@ -1,11 +1,11 @@
 const asyncHandler = require("express-async-handler");
-const bcrypt = require("bcrypt");
 const { User, Session } = require("../models/models");
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
 
 const gitHubAuthRedirect = asyncHandler(async (req, res) => {
   const { code } = req.body;
+
   const response = await axios.post(
     `https://github.com/login/oauth/access_token`,
     {
@@ -15,22 +15,24 @@ const gitHubAuthRedirect = asyncHandler(async (req, res) => {
     }
   );
   const access_token = response.data.split("&")[0].substring(13);
+
   const config = { headers: { Authorization: "token " + access_token } };
+
   const userInfo = await axios.get("https://api.github.com/user", config);
-  var { name, avatar_url, email, id, node_id } = userInfo.data;
+
+  var { name, avatar_url, email, id } = userInfo.data;
+
   if (!email) email = id + "@gmail.com";
 
   var user = await User.findOne({ email });
 
   //Compare with the hashed password using bcrypt.compare
   if (!(await User.findOne({ email }))) {
-    const hashPass = await bcrypt.hash(node_id, 10);
-
     //Save the user in the database
     user = await User.create({
       name: name,
       email: email,
-      password: hashPass,
+      authentication: "GitHub OAuth",
     });
   }
   res.status(200).json({
