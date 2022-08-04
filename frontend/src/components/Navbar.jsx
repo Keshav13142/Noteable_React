@@ -7,7 +7,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Avatar from "@mui/material/Avatar";
-import { googleLogout } from "@react-oauth/google";
+import GitHubIcon from "@mui/icons-material/GitHub";
 
 const Navbar = () => {
   //Create instance of useNavigate()
@@ -19,7 +19,6 @@ const Navbar = () => {
 
   //Executes when the Logout button is clicked
   const logout = async () => {
-    googleLogout();
     setLoading(true);
     //Make a post request to /logout (backend API) with JWT token in header
     const data = await fetch("/api/logout", {
@@ -86,14 +85,9 @@ const Navbar = () => {
             <Link className="nav-text" to="/notes">
               Noteable <span style={{ fontWeight: "400" }}></span>
             </Link>
-            <Link className="nav-text" to="/about">
-              <IconButton>
-                <InfoOutlinedIcon fontSize="small" />
-              </IconButton>
-            </Link>
           </div>
 
-          {curr_user && (
+          {curr_user ? (
             <>
               <div
                 className="collapse navbar-collapse"
@@ -141,6 +135,23 @@ const Navbar = () => {
                 </ul>
               </div>
             </>
+          ) : (
+            <div className="d-flex justify-content-center align-items-center">
+              {/* eslint-disable-next-line */}
+              <a
+                href="https://github.com/keshav13142/Noteable_React"
+                target="_blank"
+              >
+                <IconButton>
+                  <GitHubIcon fontSize="medium" />
+                </IconButton>
+              </a>
+              <Link to="/about">
+                <IconButton>
+                  <InfoOutlinedIcon fontSize="medium" />
+                </IconButton>
+              </Link>
+            </div>
           )}
         </div>
       </nav>

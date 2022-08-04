@@ -142,7 +142,6 @@ const Login = () => {
         <h2>Sign in to view your notes 📒</h2>
         <div className="card text-bg-dark home-card">
           <div className="d-flex gap-3 justify-content-center align-items-center">
-            Login with GitHub
             <Button
               color="success"
               onClick={gitHubAuthRedirect}
@@ -150,7 +149,7 @@ const Login = () => {
               endIcon={<GitHubIcon />}
               className="text-white"
             >
-              GitHub
+              Login with GitHub
             </Button>
           </div>
           <hr />

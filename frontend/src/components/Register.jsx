@@ -81,7 +81,6 @@ const Register = () => {
         <h2>Create your account 👇</h2>
         <div className="card  text-bg-dark home-card">
           <div className="d-flex gap-3 justify-content-center align-items-center">
-            Register with GitHub
             <Button
               color="success"
               onClick={gitHubAuthRedirect}
@@ -89,7 +88,7 @@ const Register = () => {
               endIcon={<GitHubIcon />}
               className="text-white"
             >
-              GitHub
+              Register with GitHub
             </Button>
           </div>
           <hr />
