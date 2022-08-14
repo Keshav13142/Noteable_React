@@ -1,0 +1,7 @@
+name: Deploy noteable to production
+on: [push]
+jobs:
+  testing:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello world
