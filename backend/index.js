@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 require("dotenv").config();
+const cors = require("cors");
 const port = process.env.PORT;
 const { errorHandler } = require("./middleware/errorHandler");
 const jwtAuth = require("./middleware/authMiddleware");
@@ -10,6 +11,7 @@ const jwtAuth = require("./middleware/authMiddleware");
 //Tell express to use the json() middleware to process requests
 app.use(express.json());
 
+app.use(cors());
 //Import all the necessary functions
 const { login, register, logout } = require("./controller/userController");
 const {

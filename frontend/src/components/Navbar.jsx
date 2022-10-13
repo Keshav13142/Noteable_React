@@ -1,13 +1,12 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { UserContext } from "../contexts/UserContext";
-import { useContext } from "react";
-import { IconButton } from "@mui/material";
+import GitHubIcon from "@mui/icons-material/GitHub";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { IconButton } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
-import GitHubIcon from "@mui/icons-material/GitHub";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../contexts/UserContext";
 
 const Navbar = () => {
   //Create instance of useNavigate()
@@ -50,7 +49,7 @@ const Navbar = () => {
       setCurrUser(null);
 
       //Navigate to the Login page
-      navigate("/login");
+      navigate("/");
     } else {
       //Get the error message
       const { error } = await data.json();
@@ -98,11 +97,11 @@ const Navbar = () => {
                 </ul>
                 <ul className="d-flex navbar-nav mb-2 mb-lg-0 gap-2 text-black">
                   <li className="nav-item d-flex justify-content-center align-items-center gap-2 mx-2">
-                    {curr_user.avatar_url ? (
+                    {curr_user?.avatar_url ? (
                       <Avatar
                         sx={{ width: 35, height: 35 }}
                         alt="Remy Sharp"
-                        src={curr_user.avatar_url}
+                        src={curr_user?.avatar_url}
                       />
                     ) : (
                       <Avatar sx={{ width: 35, height: 35 }}>
@@ -110,7 +109,7 @@ const Navbar = () => {
                       </Avatar>
                     )}
 
-                    <span className="nav-name">{curr_user.name}</span>
+                    <span className="nav-name">{curr_user?.name}</span>
                   </li>
                   <li className="nav-item d-flex justify-content-center align-items-center">
                     <span className="nav-link">

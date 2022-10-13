@@ -1,13 +1,10 @@
-import React from "react";
-import { useState } from "react";
-import { useContext } from "react";
-import { useEffect } from "react";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LoginIcon from "@mui/icons-material/Login";
+import LoadingButton from "@mui/lab/LoadingButton";
+import Button from "@mui/material/Button";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
-import LoadingButton from "@mui/lab/LoadingButton";
-import LoginIcon from "@mui/icons-material/Login";
-import Button from "@mui/material/Button";
-import GitHubIcon from "@mui/icons-material/GitHub";
 
 const Login = () => {
   //Get hold of the global state
@@ -17,22 +14,41 @@ const Login = () => {
   //Create instance of useNavigate()
   const navigate = useNavigate();
 
+  const [authState, setAuthState] = useState(null);
+
+  // eslint-disable-next-line
+  const [params, _] = useSearchParams();
+
   //Create a state for maintaining user info
   const [user, setUser] = useState({ email: "", password: "" });
 
   //Runs on mount to check if a session is already active
   useEffect(() => {
-    if (curr_user) navigate("/notes");
-    else if (code) {
-      gitHubAuth();
+    if (curr_user) {
+      navigate("/notes");
+      return;
     }
+    setAuthState({
+      code: params.get("code"),
+      error: params.get("error"),
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // eslint-disable-next-line
-  const [params, _] = useSearchParams();
-
-  const code = params.get("code");
+  useEffect(() => {
+    if (authState?.code) {
+      gitHubAuth();
+      return;
+    }
+    if (authState?.error) {
+      setInfo({
+        open: true,
+        message: "Failed to authenticate!",
+        type: "warning",
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authState]);
 
   //Update the user's info on input change
   const updateUser = (e) => {
@@ -100,7 +116,7 @@ const Login = () => {
     const data = await fetch("/auth-git", {
       method: "POST",
       body: JSON.stringify({
-        code: code,
+        code: authState?.code,
       }),
       headers: {
         "Content-Type": "application/json",

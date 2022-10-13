@@ -1,10 +1,10 @@
-import React, { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { UserContext } from "../contexts/UserContext";
+import GitHubIcon from "@mui/icons-material/GitHub";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
-import GitHubIcon from "@mui/icons-material/GitHub";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../contexts/UserContext";
 
 const Register = () => {
   //Create instance of useNavigate()
@@ -148,7 +148,7 @@ const Register = () => {
               </LoadingButton>
             </div>
             <p className="mt-3">
-              Already have an account? Login <Link to="/login">here</Link>
+              Already have an account? Login <Link to="/">here</Link>
             </p>
           </form>
         </div>

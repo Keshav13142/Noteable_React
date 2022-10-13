@@ -1,14 +1,14 @@
-import Notes from "./components/Notes";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import { UserContext } from "./contexts/UserContext";
-import { useState } from "react";
-import { Info } from "./components/Info";
-import About from "./components/About";
-import Navbar from "./components/Navbar";
 import Backdrop from "@mui/material/Backdrop";
 import LinearProgress from "@mui/material/LinearProgress";
+import { useState } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import About from "./components/About";
+import { Info } from "./components/Info";
+import Login from "./components/Login";
+import Navbar from "./components/Navbar";
+import Notes from "./components/Notes";
+import Register from "./components/Register";
+import { UserContext } from "./contexts/UserContext";
 
 function App() {
   //Create a state for maintaing the details of the logged in user (name,id and JWT token)
@@ -42,8 +42,8 @@ function App() {
           />
           <Routes>
             {/*Declare all the routes and their corresponding  Components*/}
-            <Route path="/" element={<Login />} />
-            <Route path="login" element={<Login />} />
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/login" element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="notes" element={<Notes />} />
             <Route path="about" element={<About />} />

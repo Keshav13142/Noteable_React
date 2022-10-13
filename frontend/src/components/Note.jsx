@@ -1,12 +1,12 @@
-import React, { useContext } from "react";
-import { IconButton } from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import EditIcon from "@mui/icons-material/Edit";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
-import LoadingButton from "@mui/lab/LoadingButton";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 const style = {
   position: "absolute",
@@ -78,7 +78,7 @@ const Note = (props) => {
         localStorage.clear();
 
         //Route to the Login page
-        navigate("/login");
+        navigate("/");
       }
     }
   };

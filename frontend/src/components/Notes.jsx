@@ -1,13 +1,11 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { UserContext } from "../contexts/UserContext";
-import { useEffect } from "react";
-import Note from "./Note";
 import SaveIcon from "@mui/icons-material/Save";
+import LoadingButton from "@mui/lab/LoadingButton";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../contexts/UserContext";
+import Note from "./Note";
 
 const Notes = () => {
   //Create instance of useNavigate()
@@ -20,7 +18,7 @@ const Notes = () => {
   //Runs on mount to check if a session is already active
   useEffect(() => {
     //If not logged in then route to login page
-    if (!curr_user) navigate("/login");
+    if (!curr_user) navigate("/");
     //Else get the notes
     else {
       getNotes();
@@ -68,8 +66,8 @@ const Notes = () => {
         setCurrUser(null);
         localStorage.clear();
 
-        //Route to login pages
-        navigate("/login");
+        //Route to login page
+        navigate("/");
 
         //Setting global state for Alert
         setInfo({ open: true, message: error.info, type: "warning" });
@@ -125,7 +123,7 @@ const Notes = () => {
         localStorage.clear();
 
         //Route to the Login page
-        navigate("/login");
+        navigate("/");
       }
     }
   };
@@ -174,7 +172,7 @@ const Notes = () => {
         localStorage.clear();
 
         //Route to the Login page
-        navigate("/login");
+        navigate("/");
       }
     }
   };
