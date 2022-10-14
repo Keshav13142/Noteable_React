@@ -1,6 +1,6 @@
 <h1 style="font-size:40px">Noteable <img src='https://cdn-icons-png.flaticon.com/512/889/889648.png' width=32></h1>
 
-<h1>App is hosted using heroku, available <a href='https://noteable-app.herokuapp.com' target='_blank'>here</a></h1>
+<h1>App is hosted using heroku, available <a href='https://noteable.keshav11.in' target='_blank'>here</a></h1>
 
 This is a Note Taking app built using <br>
 
